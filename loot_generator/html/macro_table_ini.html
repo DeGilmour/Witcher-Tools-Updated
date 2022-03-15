@@ -1,0 +1,165 @@
+
+<table style="width: 70%; background-color: #2c1600;"  id="table-ini" class="table table-dark mt-5 m-5 ml-5 rounded">
+    <tr scope="row">
+        <td>Position</td>
+        <td>Name</td>
+        <td>Health</td>
+        <td>Result</td>
+    </tr>
+    {% for ini in list_initiave_sorted %}
+    {% if ini.index == 0 %}
+    <tr  draggable="true"  class="row-active" scope="row" id="td-{{ini.index}}">
+        <td>{{ini.index + 1}}</td>
+        <td>{{ini.name}}</td>
+        <td><input class="rounded text-white"  style="background-color: #462300;"  value="{{ini.health}}"></td>
+        <td><input class="rounded text-white"  style="background-color: #462300;"  value="{{ini.result}}"></td>
+        <td><button data-toggle="modal" data-target="#buff-{{ini.index}}" class="btn btn-outline-success bg-dark rounded">+</button></td>
+        <td><button data-toggle="modal" data-target="#debuff-{{ini.index}}"  class="btn btn-outline-success bg-dark rounded">X</button></td>
+        <td><button onclick="deleteTd(this)" value="{{ini.index}}" class="btn btn-outline-success bg-dark rounded">Delete</button></td>
+    </tr>
+    {% else %}
+    <tr draggable="true"  class="row-deactive" scope="row"  id="td-{{ini.index}}">
+        <td>{{ini.index + 1}}</td>
+        <td>{{ini.name}}</td>
+        <td><input class="rounded text-white"  style="background-color: #462300;"  value="{{ini.health}}"></td>
+        <td><input class="rounded text-white"  style="background-color: #462300;"  value="{{ini.result}}"></td>
+        <td><button data-toggle="modal" data-target="#buff-{{ini.index}}" class="btn btn-outline-success bg-dark rounded">+</button></td>
+        <td><button data-toggle="modal" data-target="#debuff-{{ini.index}}"  class="btn btn-outline-success bg-dark rounded">X</button></td>
+        <td><button onclick="deleteTd(this)" value="{{ini.index}}" class="btn btn-outline-success bg-dark rounded">Delete</button></td>
+    </tr>
+    {% endif %}
+    <div class="modal fade" id="buff-{{ini.index}}" tabindex="-1" role="dialog" aria-labelledby="buff_label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div style="background-color: #2c1600;" class="modal-content text-white">
+            <label for='buff_text'>Input the characters buff</label>
+            <textarea id="buff_text" placeholder="The buff"></textarea>
+        </div>
+        </div>
+    </div>
+    
+    <div class="modal fade"  id="debuff-{{ini.index}}" tabindex="-1" role="dialog" aria-labelledby="debuff_label" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div style="background-color: #2c1600;" class="modal-content text-white">
+            <label for='debuff_text'>Input the characters debuff</label>
+            <textarea id="debuff_text" placeholder="The debuff"></textarea>
+        </div>
+        </div>
+    </div>
+    {% endfor %}
+</table>
+
+<button class="btn rounded text-white" style="background-color: #462300;" onclick="nextCharacter()">Next Character</button>
+
+{% macro table_ini() %}
+<h1 class="text-white title">Initiative Calculator</h1>
+
+        <div class="absolute text-white">
+            <label for="numberOfCharacters">Type the number of characters</label>
+            <input id="numberOfCharacters" style="background-color: #462300;" class="rounded text-white" onblur="NumberOfCharacters(this)" type="number" max="30">
+            <div class="form-group" id="for_number">
+            </div>
+            <input class='btn text-white' style="background-color: #462300;" id="btn_calculate" onclick='CalculateInitiave()' placeholder="Calculate">
+        </div>
+        <label class="text-white active mt-4 mb-4" id='round_counter'></label>
+        <div id="return-table" class="table-responsive text-white">
+            
+        </div>
+{% endmacro %}
+
+{% macro combat() %}
+<h1 class="text-white title">Combat Simulator/Tracker</h1>
+<input type="hidden" id="attack_value">
+<div class="alert alert-primary" style="width: 50%;display: none;" id='message' role="alert">
+    
+</div>
+
+<div>
+    <div class="mt-4" style="width: 40%;height: 70%;">
+      <div class="carousel-item active">
+          <div class="card d-block w-100 text-white rounded normal-background">
+            <div class="card-body">
+                <div class="card-body">
+                    <label class="card-title">The defendent is a Monster or Humanoid?</label>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input enemy_type"  id="monster" data-toggle="collapse" data-target="#monster_location" onclick="check_uncheck(2)">
+                        <label  for="no" class="form-check-label" >Monster</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input enemy_type"   id="humanoid"  data-toggle="collapse" data-target="#human_location" onclick="check_uncheck(1)">
+                        <label  for="no" class="form-check-label" >Humanoid</label>
+                    </div>
+                </div>
+
+                <label class="card-title">Is the attacker Aiming?</label>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input aiming " id="yes" data-toggle="collapse" data-target="#location">
+                    <label  for="yes" class="form-check-label" >Yes</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input aiming"  id="no" data-toggle="collapse" data-target="#roll">
+                    <label  for="no" class="form-check-label" >No</label>
+                </div>
+            </div>
+            <div id="location" class="collapse">
+                <div id="human_location" class="collapse w-50">
+                    <label for="human_location">Select a location</label>
+                    <select name="human_location_select" id="human_location_select" class="browser-default custom-select text-white rounded" data-toggle="collapse" data-target="#roll" style="background-color: #2c1600;">
+                        <option value="0">Select a option</option>
+                        <option value="1">Head</option>
+                        <option value="2">Torso</option>
+                        <option value="3">R.Arm</option>
+                        <option value="4">L.Arm</option>
+                        <option value="5">R.Leg</option>
+                        <option value="6">L.Leg</option>
+                    </select>
+                </div>
+                <div id="monster_location" class="collapse w-50">
+                    <label for="monster_location">Select a location</label>
+                    <select name="monster_location_select" id="monster_location_select" class="browser-default custom-select text-white rounded" data-toggle="collapse" data-target="#roll" style="background-color: #2c1600;">
+                        <option value="0">Select a option</option>
+                        <option value="1">Head</option>
+                        <option value="2">Torso</option>
+                        <option value="3">R.limb</option>
+                        <option value="4">L.limb</option>
+                        <option value="5">Tail/Wing</option>
+                    </select>
+                </div>
+            </div>
+            <div id="roll" class="collapse form-group w-50 mt-2">
+                <label for="attribute">Attribute value: </label><input type="text" class="form-control mt-2 mb-2 normal-background" id="attribute">
+                <label for="skill">Skill value: </label><input  class="form-control mt-2 normal-background" type="text" id="skill">
+                <label for="skill">Damage: </label><input class="form-control mt-2 normal-background" type="text" id="damage">
+                <button class="btn btn-primary mb-3 mt-3" onclick="getDamageLocation()" data-toggle="collapse" data-target="#defense">Roll</button>
+            </div>
+            <div id="defense" class="collapse form-group w-50 mt-2">
+                <label for="attribute">Defense: </label><input type="text" class="form-control mt-2 mb-2 normal-background" id="defense_roll" onblur="getDefense(this)">
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endmacro %}
+
+
+{% macro error_message(message) %}
+<div id="modal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Sadly, we coundt complete that operation due to this error</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>{{message}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+<script>
+    $("#modal").modal()
+</script>
+{% endmacro %}
+

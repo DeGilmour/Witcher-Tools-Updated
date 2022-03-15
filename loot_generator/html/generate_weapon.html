@@ -1,0 +1,105 @@
+
+{% extends "header.html" %}
+{% block body %}
+    <title>{{title}}</title>
+    <center>
+        <form name='generate_random_form' action='/home/calculeteRandom'>
+            <label for="button_genrate_random"  class="text-white ml-2">Generate a random Weapon: </label>
+            <input id="button_genrate_random" class="btn btn-outline-success bg-dark" value="Generate" type="submit">
+        </form>
+    <div class="mb-5">
+        <form class="mb-5" name="generate_weapon" action="/home/calculeteWeapon"  method="POST" >
+            <h6  class="text-white">Generate a weapon of your choice</h6>
+            <div class="container mt-5" style="width: 30%;">
+                <div class="mb-3">
+                <label  class="text-white" for="weapon">Choose the weapon: </label>
+                    <select  class="browser-default custom-select text-white rounded"  style="background-color: #2c1600;" id="weapon" name="weapon"> 
+                        {% for weapon in result.weapon %}
+                        <option {% if weapon.id == weapon_id %} selected {% endif %} value="{{weapon.id}}">{{weapon.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <label class="text-white"  for="rarity">Choose the rarity: </label>
+                <select class="browser-default custom-select text-white rounded" name="rarity" style="background-color: #2c1600;">
+                    {% for rarity in result.rarity %}
+                    <option  {% if rarity.id == availability_id %} selected {% endif %} value="{{rarity.id}}">{{rarity.name}}</option>
+                    {% endfor %}
+                </select>
+                <button class="btn btn-outline-success bg-dark rounded mt-3 float-right" type="submit">Generate the selected weapon</button>
+            </div>
+        </form>
+    </div>
+    {% if list_weapon_random %}
+    <div class="table-responsive">
+        <table style="width: 70%; background-color: #2c1600;" class="table table-dark mt-5 m-5 ml-5 rounded">
+            <tr scope="row">
+                <td>Name</td>
+                <td>Type</td>
+                <td>Weapon Accuracy</td>
+                <td>Availability</td>
+                <td>Damage</td>
+                <td>Reliability</td>
+                <td>Hands Required</td>
+                <td>Range</td>
+                <td>Effect</td>
+                <td>Concealment</td>
+                <td>Enhancements</td>
+                <td>Weight</td>
+                <td>Cost</td>
+            </tr>
+            {% for weapon in list_weapon_random %}
+            <form id="save_weapon" name="save_weapon"  action="/home/save_weapon" method="POST" >
+                <tr scope="row">
+                    <td>{{weapon.name}}</td>
+                    <td>{{weapon.type}}</td>
+                    <td>{{weapon.accuracy}}</td>
+                    <td>{{weapon.availability}}</td>
+                    <td >{{weapon.damage}}</td>
+                    <td>{{weapon.reliability}}</td>
+                    <td>{{weapon.hands}}</td>
+                    <td>{{weapon.range}}</td>
+                    <td>{{weapon.effect}}</td>
+                    <td>{{weapon.concealment}}</td>
+                    <td>{{weapon.enhancements}}</td>
+                    <td>{{weapon.weight}}</td>
+                    <td>{{weapon.cost}}</td>
+                    <input type="hidden" value="{{weapon.type_id}}" name="weapon_type">
+                    <input type="hidden" value="{{weapon.accuracy}}" name="accuracy">
+                    <input type="hidden" value="{{weapon.availability}}" name="availability">
+                    <input type="hidden" value="{{weapon.damage}}" name="damage">
+                    <input type="hidden" value="{{weapon.reliability}}" name="reliability">
+                    <input type="hidden" value="{{weapon.hands}}" name="hands">
+                    <input type="hidden" value="{{weapon.effect}}" name="effect">
+                    <input type="hidden" value="{{weapon.weapon_Concealment}}" name="weapon_Concealment">
+                    <input type="hidden" value="{{weapon.weight}}" name="weight">
+                    <input type="hidden" value="{{weapon.cost}}" name="weapon_cost">
+                    <input type="hidden" value="{{weapon.effect_id}}" name="effect_id">
+                    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                        <div style="background-color: #2c1600;" class="modal-content text-white">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Save Weapon</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <label for="input_save">Define Weapon's Name</label>
+                                <input name="name" id="input_save"  style="background-color: #462300;" class="text-white form-control mr-4" placeholder="The name of your weapon" required>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-outline-success bg-dark rounded"  >Save changes</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </tr>
+            </form>
+            {% endfor %}
+        </table>
+    </div>
+    <button data-toggle="modal" class="btn-outline-success rounded mt-3 bg-dark" type="button" data-target="#exampleModal" id="btn_save">Save your Weapon</button>
+    {% endif %}
+    </center>
+{% endblock %}

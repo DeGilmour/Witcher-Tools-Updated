@@ -1,0 +1,15 @@
+{% extends "header.html" %}
+{% block body %}
+<title>{{title}}</title>
+<center>
+    {% import "macro_table_ini.html" as macro_table %}
+    {% if initiativeCalculator %}
+    {{ initiativeCalculator() }}
+    {% endif %}
+
+    {% if combatSimulator %}
+    {{ combatSimulator() }}
+    {% endif %}
+</center>
+
+  {% endblock %}

@@ -1,0 +1,43 @@
+select{
+    background-color: #663300;
+    color: #000000;
+}
+select:hover{
+    background-color: #b45e08;
+}
+input{
+    background-color: #b45e08;
+    color: #000000;
+}
+.dropdown_menu{
+    background-color: #663300;
+}
+
+.cards-title{
+    background-color: #3b1f02;
+}
+.cards-body{
+    background-color: #6e3a06;
+}
+.cards-out{
+    background-color: #000000;
+}
+.normal-background{
+    background-color: #462300;
+    color: #fff;
+}
+.dropdown-menu-itens:hover{
+    background-color: #462300;
+}
+
+.row-active{
+    background-color: #723b05;
+}
+.row-deactive{
+    background-color: #462300;
+}
+
+body{
+    background-image: url(../background.jpg);
+    font-family: MedievalSharp;
+}
